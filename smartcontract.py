@@ -23,7 +23,6 @@ class Block:
     validator: str
     
     def hash(self) -> str:
-        """Вычисляет хэш блока"""
         block_string = json.dumps(asdict(self), sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
 
@@ -37,7 +36,7 @@ class Transaction:
     contract_call: Optional['ContractCall'] = None
     
     def validate(self) -> bool:
-        if self.sender == "0":  # Системная транзакция
+        if self.sender == "0":
             return True
             
         try:
@@ -74,7 +73,6 @@ class SmartContract:
         self.balance = 0.0
         
     def execute(self, method: str, args: List[Any], sender: str, value: float) -> Any:
-        """Выполняет метод контракта"""
         self.balance += value
         if hasattr(self, method):
             return getattr(self, method)(*args, sender=sender)
